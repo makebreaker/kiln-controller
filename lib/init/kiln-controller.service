@@ -1,8 +1,11 @@
 [Unit]
 Description=kiln-controller
+StartLimitIntervalSec=0
 
 [Service]
-ExecStart=/home/pi/kiln-controller/venv/bin/python /home/pi/kiln-controller/kiln-controller.py
+ExecStart=/home/distract/kiln-controller/venv/bin/python /home/distract/kiln-controller/kiln-controller.py
+Restart=always
+RestartSec=1s
 
 [Install]
 WantedBy=multi-user.target
