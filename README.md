@@ -1,4 +1,5 @@
-Kiln Controller
+Fork of jbruce12000's work to modify it for my kiln (different TC board etc)
+Kiln Controller 
 ==========
 
 Turns a Raspberry Pi into an inexpensive, web-enabled kiln controller.
