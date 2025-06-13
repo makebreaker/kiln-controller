@@ -6,7 +6,7 @@ import busio
 import time
 
 class MCP9600:
-    def __init__(self, i2c_bus=None, address=0x60):
+    def __init__(self, i2c_bus=None, address=0x67):
         if i2c_bus is None:
             i2c_bus = busio.I2C(board.SCL, board.SDA)
         self.mcp = adafruit_mcp9600.MCP9600(i2c_bus, address=address)

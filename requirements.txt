@@ -16,7 +16,7 @@ RPi.GPIO
 # adafruit-circuitpython-max31856
 
 # for folks using sw spi (bit banging)
-adafruit-circuitpython-bitbangio
+# adafruit-circuitpython-bitbangio
 
 # untested - for PT100 platinum thermocouples
 #adafruit-circuitpython-max31865
