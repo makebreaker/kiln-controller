@@ -104,7 +104,7 @@ except (NotImplementedError,AttributeError):
 # max31856 = 0
 mcp9600 = 1
 # Uncomment and set the following if using MCP9600
-# mcp9600_i2c_address = 0x60  # Default I2C address for MCP9600
+# mcp9600_i2c_address = 0x67  # Default I2C address for MCP9600
 
 ########################################################################
 #

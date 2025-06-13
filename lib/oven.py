@@ -334,7 +334,7 @@ class MCP9600Sensor(TempSensorReal):
         import adafruit_mcp9600
         i2c = busio.I2C(board.SCL, board.SDA)
         address = getattr(config, 'mcp9600_i2c_address', 0x67)
-        self.thermocouple = adafruit_mcp9600.MCP9600(i2c, address=address)
+        self.thermocouple = adafruit_mcp9600.MCP9600(i2c)
 
     def raw_temp(self):
         return self.thermocouple.temperature
