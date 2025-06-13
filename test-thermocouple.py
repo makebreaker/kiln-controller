@@ -54,9 +54,15 @@ if(config.max31855):
     print("thermocouple: adafruit max31855")
     sensor = adafruit_max31855.MAX31855(spi, cs)
 if(config.max31856):
-    import adafruit_max31856
-    print("thermocouple: adafruit max31856")
-    sensor = adafruit_max31856.MAX31856(spi, cs)
+    pass
+if(getattr(config, 'mcp9600', 0)):
+    import board
+    import busio
+    import adafruit_mcp9600
+    print("thermocouple: adafruit mcp9600")
+    i2c = busio.I2C(board.SCL, board.SDA)
+    address = getattr(config, 'mcp9600_i2c_address', 0x60)
+    sensor = adafruit_mcp9600.MCP9600(i2c, address=address)
 
 print("Degrees displayed in %s\n" % (config.temp_scale))
 

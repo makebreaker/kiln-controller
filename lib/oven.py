@@ -83,6 +83,8 @@ class RealBoard(Board):
             return Max31855()
         if config.max31856:
             return Max31856()
+        if getattr(config, 'mcp9600', 0):
+            return MCP9600Sensor()
 
 class SimulatedBoard(Board):
     '''Simulated board used during simulations.
@@ -322,6 +324,20 @@ class Max31856(TempSensorReal):
             if v:
                 raise Max31856_Error(k)
         return temp
+
+class MCP9600Sensor(TempSensorReal):
+    '''MCP9600 I2C thermocouple sensor'''
+    def __init__(self):
+        TempSensorReal.__init__(self)
+        import board
+        import busio
+        import adafruit_mcp9600
+        i2c = busio.I2C(board.SCL, board.SDA)
+        address = getattr(config, 'mcp9600_i2c_address', 0x60)
+        self.thermocouple = adafruit_mcp9600.MCP9600(i2c, address=address)
+
+    def raw_temp(self):
+        return self.thermocouple.temperature
 
 class Oven(threading.Thread):
     '''parent oven class. this has all the common code

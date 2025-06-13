@@ -96,24 +96,15 @@ except (NotImplementedError,AttributeError):
 #######################################
 ### Thermocouple breakout boards
 #######################################
-# There are only two breakoutboards supported. 
+# There are only three breakout boards supported. 
 #   max31855 - only supports type K thermocouples
 #   max31856 - supports many thermocouples
+#   mcp9600  - supports many thermocouples (I2C)
 max31855 = 0
-max31856 = 1
-# uncomment these two lines if using MAX-31856
-import adafruit_max31856
-thermocouple_type = adafruit_max31856.ThermocoupleType.J
-
-# here are the possible max-31856 thermocouple types
-#   ThermocoupleType.B
-#   ThermocoupleType.E
-#   ThermocoupleType.J
-#   ThermocoupleType.K
-#   ThermocoupleType.N
-#   ThermocoupleType.R
-#   ThermocoupleType.S
-#   ThermocoupleType.T
+max31856 = 0
+mcp9600 = 1
+# Uncomment and set the following if using MCP9600
+# mcp9600_i2c_address = 0x60  # Default I2C address for MCP9600
 
 ########################################################################
 #
