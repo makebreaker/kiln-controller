@@ -306,8 +306,9 @@ class Max31856(TempSensorReal):
         TempSensorReal.__init__(self)
         log.info("thermocouple MAX31856")
         import adafruit_max31856
-        self.thermocouple = adafruit_max31856.MAX31856(self.spi,self.cs,
-                                        thermocouple_type=config.thermocouple_type)
+        tc_type = getattr(config, 'thermocouple_type', 'K')
+        tc_enum = getattr(adafruit_max31856.ThermocoupleType, tc_type)
+        self.thermocouple = adafruit_max31856.MAX31856(self.spi, self.cs, thermocouple_type=tc_enum)
         if (config.ac_freq_50hz == True):
             self.thermocouple.noise_rejection = 50
         else:
@@ -335,6 +336,12 @@ class MCP9600Sensor(TempSensorReal):
         i2c = busio.I2C(board.SCL, board.SDA)
         address = getattr(config, 'mcp9600_i2c_address', 0x67)
         self.thermocouple = adafruit_mcp9600.MCP9600(i2c)
+        # MCP9600 does not use type in constructor, but you can set .thermocouple_type if needed
+        tc_type = getattr(config, 'thermocouple_type', 'K')
+        try:
+            self.thermocouple.thermocouple_type = tc_type
+        except AttributeError:
+            pass
 
     def raw_temp(self):
         return self.thermocouple.temperature

@@ -54,7 +54,11 @@ print("\nboard: %s" % (board.board_id))
 #     print("thermocouple: adafruit max31855")
 #     sensor = adafruit_max31855.MAX31855(spi, cs)
 # if(config.max31856):
-#     pass
+#     import adafruit_max31856
+#     print("thermocouple: adafruit max31856")
+#     tc_type = getattr(config, 'thermocouple_type', 'K')
+#     tc_enum = getattr(adafruit_max31856.ThermocoupleType, tc_type)
+#     sensor = adafruit_max31856.MAX31856(spi, cs, thermocouple_type=tc_enum)
 if(getattr(config, 'mcp9600', 0)):
     import board
     import busio

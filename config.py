@@ -100,11 +100,17 @@ except (NotImplementedError,AttributeError):
 #   max31855 - only supports type K thermocouples
 #   max31856 - supports many thermocouples
 #   mcp9600  - supports many thermocouples (I2C)
-# max31855 = 0
-# max31856 = 0
+max31855 = 0
+max31856 = 0
 mcp9600 = 1
 # Uncomment and set the following if using MCP9600
 # mcp9600_i2c_address = 0x67  # Default I2C address for MCP9600
+
+#######################################
+# Thermocouple type selection
+#######################################
+# Set the thermocouple type used by your sensor. Options: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
+thermocouple_type = 'B'  # Change as needed: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
 
 ########################################################################
 #
