@@ -274,3 +274,14 @@ kiln_profiles_directory = os.path.abspath(os.path.join(os.path.dirname( __file__
 # To prevent throttling, set throttle_percent to 100.
 throttle_below_temp = 300
 throttle_percent = 100
+
+#######################################
+# OLED Display Configuration
+#######################################
+# Set to 1 to enable OLED display, 0 to disable
+use_oled_display = 1
+# Set the screen width and height in pixels
+oled_width = 128
+oled_height = 64
+# Set the I2C address of the OLED display (default for SSD1306 is 0x3C)
+oled_i2c_address = 0x3C

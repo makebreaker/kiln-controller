@@ -336,6 +336,17 @@ class MCP9600Sensor(TempSensorReal):
     def raw_temp(self):
         return self.thermocouple.temperature
 
+try:
+    import config
+    if getattr(config, 'use_oled_display', 0):
+        from lib.oled_display import OledDisplay
+        oled = OledDisplay()
+    else:
+        oled = None
+except Exception as e:
+    oled = None
+    log.error(f"OLED display init failed: {e}")
+
 class Oven(threading.Thread):
     '''parent oven class. this has all the common code
        for either a real or simulated oven'''
@@ -345,6 +356,17 @@ class Oven(threading.Thread):
         self.temperature = 0
         self.time_step = config.sensor_time_wait
         self.reset()
+        self.oled = oled
+
+    def update_oled(self):
+        if self.oled:
+            try:
+                current_temp = self.board.temp_sensor.temperature()
+                target_temp = self.target
+                heater_on = bool(self.heat)
+                self.oled.update(current_temp, target_temp, heater_on)
+            except Exception as e:
+                log.error(f"OLED update failed: {e}")
 
     def reset(self):
         self.cost = 0
@@ -359,6 +381,7 @@ class Oven(threading.Thread):
         self.heat_rate_temps = []
         self.pid = PID(ki=config.pid_ki, kd=config.pid_kd, kp=config.pid_kp)
         self.catching_up = False
+        self.update_oled()
 
     @staticmethod
     def get_start_from_temperature(profile, temp):
@@ -581,6 +604,7 @@ class Oven(threading.Thread):
                 self.heat_then_cool()
                 self.reset_if_emergency()
                 self.reset_if_schedule_ended()
+                self.update_oled()
 
 class SimulatedOven(Oven):
 

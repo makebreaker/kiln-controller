@@ -23,3 +23,6 @@ RPi.GPIO
 
 # untested - for mcp9600 and mcp9601
 adafruit-circuitpython-mcp9600
+adafruit-circuitpython-ssd1306
+Pillow
+
