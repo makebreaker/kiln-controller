@@ -123,19 +123,6 @@ class TempSensorReal(TempSensor):
         TempSensor.__init__(self)
         self.sleeptime = self.time_step / float(config.temperature_average_samples)
         self.temptracker = TempTracker() 
-        self.spi_setup()
-        self.cs = digitalio.DigitalInOut(config.spi_cs)
-
-    def spi_setup(self):
-        if(hasattr(config,'spi_sclk') and
-           hasattr(config,'spi_mosi') and
-           hasattr(config,'spi_miso')):
-            self.spi = bitbangio.SPI(config.spi_sclk, config.spi_mosi, config.spi_miso)
-            log.info("Software SPI selected for reading thermocouple")
-        else:
-            import board
-            self.spi = board.SPI();
-            log.info("Hardware SPI selected for reading thermocouple")
 
     def get_temperature(self):
         '''read temp from tc and convert if needed'''
@@ -306,6 +293,9 @@ class Max31856(TempSensorReal):
         TempSensorReal.__init__(self)
         log.info("thermocouple MAX31856")
         import adafruit_max31856
+        self.spi_setup()
+        import digitalio
+        self.cs = digitalio.DigitalInOut(config.spi_cs)
         tc_type = getattr(config, 'thermocouple_type', 'K')
         tc_enum = getattr(adafruit_max31856.ThermocoupleType, tc_type)
         self.thermocouple = adafruit_max31856.MAX31856(self.spi, self.cs, thermocouple_type=tc_enum)
@@ -314,17 +304,17 @@ class Max31856(TempSensorReal):
         else:
             self.thermocouple.noise_rejection = 60
 
-    def raw_temp(self):
-        # The underlying adafruit library does not throw exceptions
-        # for thermocouple errors. Instead, they are stored in 
-        # dict named self.thermocouple.fault. Here we check that
-        # dict for errors and raise an exception.
-        # and raise Max31856_Error(message)
-        temp = self.thermocouple.temperature
-        for k,v in self.thermocouple.fault.items():
-            if v:
-                raise Max31856_Error(k)
-        return temp
+    def spi_setup(self):
+        import bitbangio
+        if(hasattr(config,'spi_sclk') and
+           hasattr(config,'spi_mosi') and
+           hasattr(config,'spi_miso')):
+            self.spi = bitbangio.SPI(config.spi_sclk, config.spi_mosi, config.spi_miso)
+            log.info("Software SPI selected for reading thermocouple")
+        else:
+            import board
+            self.spi = board.SPI();
+            log.info("Hardware SPI selected for reading thermocouple")
 
 class MCP9600Sensor(TempSensorReal):
     '''MCP9600 I2C thermocouple sensor'''
