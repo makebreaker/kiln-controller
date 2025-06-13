@@ -86,7 +86,7 @@ try:
     import board
 # spi_sclk  = board.D17    #spi clock
 #  spi_miso  = board.D27    #spi Microcomputer In Serial Out
-    spi_cs    = board.D5    #spi Chip Select
+    # spi_cs    = board.D5    #spi Chip Select
 #    spi_mosi  = board.D10    #spi Microcomputer Out Serial In (not connected) 
     gpio_heat = board.D27    #output that controls relay
     gpio_heat_invert = False #invert the output state
@@ -104,7 +104,7 @@ max31855 = 0
 max31856 = 0
 mcp9600 = 1
 # Uncomment and set the following if using MCP9600
-# mcp9600_i2c_address = 0x67  # Default I2C address for MCP9600
+mcp9600_i2c_address = 0x67  # Default I2C address for MCP9600
 
 #######################################
 # Thermocouple type selection
