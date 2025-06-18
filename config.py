@@ -14,7 +14,7 @@ log_format = '%(asctime)s %(levelname)s %(name)s: %(message)s'
 ### Server
 listening_port = 8085
 
-########################################################################
+################################################################
 # Cost Information
 #
 # This is used to calculate a cost estimate before a run. It's also used
