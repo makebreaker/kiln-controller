@@ -279,7 +279,7 @@ throttle_percent = 100
 # OLED Display Configuration
 #######################################
 # Set to 1 to enable OLED display, 0 to disable
-use_oled_display = 1
+use_oled_display = 0
 # Set the screen width and height in pixels
 oled_width = 128
 oled_height = 64
