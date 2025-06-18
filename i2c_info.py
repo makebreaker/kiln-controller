@@ -3,7 +3,7 @@ import sys
 
 def get_rpi_i2c_baudrate():
     """Try to read the I2C baudrate from /boot/config.txt (Raspberry Pi only)."""
-    config_path = '/boot/config.txt'
+    config_path = '/boot/firmware/config.txt'
     baudrate = None
     if os.path.exists(config_path):
         with open(config_path, 'r') as f:
