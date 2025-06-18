@@ -26,3 +26,4 @@ adafruit-circuitpython-mcp9600
 adafruit-circuitpython-ssd1306
 Pillow
 
+# IF you  have issues with pillow try sudo apt install libjpeg-dev zlib1g-dev
