@@ -88,7 +88,7 @@ try:
 #  spi_miso  = board.D27    #spi Microcomputer In Serial Out
     # spi_cs    = board.D5    #spi Chip Select
 #    spi_mosi  = board.D10    #spi Microcomputer Out Serial In (not connected) 
-    gpio_heat = board.D27    #output that controls relay
+    gpio_heat = board.D17    #output that controls relay
     gpio_heat_invert = False #invert the output state
 except (NotImplementedError,AttributeError):
     print("not running on blinka recognized board, probably a simulation")
@@ -272,6 +272,7 @@ kiln_profiles_directory = os.path.abspath(os.path.join(os.path.dirname( __file__
 # control window and below throttle_below_temp, only throttle_percent
 # of the elements are used max.
 # To prevent throttling, set throttle_percent to 100.
+
 throttle_below_temp = 300
 throttle_percent = 100
 
