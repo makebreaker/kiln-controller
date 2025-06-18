@@ -110,7 +110,7 @@ mcp9600_i2c_address = 0x67  # Default I2C address for MCP9600
 # Thermocouple type selection
 #######################################
 # Set the thermocouple type used by your sensor. Options: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
-thermocouple_type = 'B'  # Change as needed: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
+thermocouple_type = 'S'  # Change as needed: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
 
 ########################################################################
 #
