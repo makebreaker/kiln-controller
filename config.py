@@ -110,7 +110,7 @@ mcp9600_i2c_address = 0x67  # Default I2C address for MCP9600
 # Thermocouple type selection
 #######################################
 # Set the thermocouple type used by your sensor. Options: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
-thermocouple_type = 'R'  # Change as needed: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
+thermocouple_type = 'S'  # Change as needed: 'K', 'J', 'T', 'E', 'N', 'S', 'R', 'B'
 
 ########################################################################
 #
@@ -182,7 +182,7 @@ time_scale_profile  = "m" # s = Seconds | m = Minutes | h = Hours - Enter and vi
 # naturally cool off. If your SSR has failed/shorted/closed circuit, this
 # means your kiln receives full power until your house burns down.
 # this should not replace you watching your kiln or use of a kiln-sitter
-emergency_shutoff_temp = 1800 #cone 7
+emergency_shutoff_temp = 1400 #cone 7
 
 # If the current temperature is outside the pid control window,
 # delay the schedule until it does back inside. This allows for heating
