@@ -716,8 +716,15 @@ class SimulatedOven(Oven):
 class RealOven(Oven):
 
     def __init__(self):
+        self.oled = None  # Always define self.oled before any reset/init
         self.board = RealBoard()
         self.output = Output()
+        if getattr(config, 'use_oled_display', 0):
+            try:
+                from lib.oled_display import OledDisplay
+                self.oled = OledDisplay()
+            except Exception as e:
+                log.error(f"OLED display init failed: {e}")
         self.reset()
 
         # call parent init
