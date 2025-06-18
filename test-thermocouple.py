@@ -44,9 +44,9 @@ except NotImplementedError:
 #     spi = board.SPI();
 #     print("Hardware SPI selected for reading thermocouple")
 
-cs = DigitalInOut(config.spi_cs)
-cs.switch_to_output(value=True)
-sensor = None
+# cs = DigitalInOut(config.spi_cs)
+# cs.switch_to_output(value=True)
+# sensor = None
 
 print("\nboard: %s" % (board.board_id))
 # if(config.max31855):
