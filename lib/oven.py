@@ -355,8 +355,8 @@ class Oven(threading.Thread):
         self.daemon = True
         self.temperature = 0
         self.time_step = config.sensor_time_wait
+        self.oled = oled  # Initialize self.oled before reset
         self.reset()
-        self.oled = oled
 
     def update_oled(self):
         if self.oled:
