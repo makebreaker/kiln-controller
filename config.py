@@ -288,4 +288,4 @@ oled_i2c_address = 0x3C
 
 # I2C configuration
 # Set i2c_frequency to None to use the system default, or set to an integer (e.g. 100000 for 100kHz)
-i2c_frequency = None  # e.g. 100000, 400000, 10000, etc. Set to None to auto-detect or use default
+i2c_frequency = 10000  # e.g. 100000, 400000, 10000, etc. Set to None to auto-detect or use default
