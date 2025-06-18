@@ -7,7 +7,13 @@ import config
 
 class OledDisplay:
     def __init__(self):
-        i2c = busio.I2C(board.SCL, board.SDA)
+        i2c_freq = getattr(config, 'i2c_frequency', None)
+        import board
+        import busio
+        if i2c_freq:
+            i2c = busio.I2C(board.SCL, board.SDA, frequency=i2c_freq)
+        else:
+            i2c = busio.I2C(board.SCL, board.SDA)
         self.display = adafruit_ssd1306.SSD1306_I2C(
             config.oled_width,
             config.oled_height,

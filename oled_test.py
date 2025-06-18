@@ -3,15 +3,20 @@ import board
 import busio
 import adafruit_ssd1306
 from PIL import Image, ImageDraw, ImageFont
+import config
 
 # Configurable parameters
-OLED_WIDTH = 128
-OLED_HEIGHT = 64
-OLED_I2C_ADDRESS = 0x3C
+OLED_WIDTH = getattr(config, 'oled_width', 128)
+OLED_HEIGHT = getattr(config, 'oled_height', 64)
+OLED_I2C_ADDRESS = getattr(config, 'oled_i2c_address', 0x3C)
+I2C_FREQ = getattr(config, 'i2c_frequency', None)
 
 # Initialize I2C and display
 print("Initializing I2C and OLED display...")
-i2c = busio.I2C(board.SCL, board.SDA)
+if I2C_FREQ:
+    i2c = busio.I2C(board.SCL, board.SDA, frequency=I2C_FREQ)
+else:
+    i2c = busio.I2C(board.SCL, board.SDA)
 display = adafruit_ssd1306.SSD1306_I2C(OLED_WIDTH, OLED_HEIGHT, i2c, addr=OLED_I2C_ADDRESS)
 display.fill(0)
 display.show()

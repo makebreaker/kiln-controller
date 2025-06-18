@@ -323,7 +323,11 @@ class MCP9600Sensor(TempSensorReal):
         import board
         import busio
         import adafruit_mcp9600
-        i2c = busio.I2C(board.SCL, board.SDA)
+        i2c_freq = getattr(config, 'i2c_frequency', None)
+        if i2c_freq:
+            i2c = busio.I2C(board.SCL, board.SDA, frequency=i2c_freq)
+        else:
+            i2c = busio.I2C(board.SCL, board.SDA)
         address = getattr(config, 'mcp9600_i2c_address', 0x67)
         self.thermocouple = adafruit_mcp9600.MCP9600(i2c)
         # MCP9600 does not use type in constructor, but you can set .thermocouple_type if needed
