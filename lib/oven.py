@@ -126,20 +126,39 @@ class TempSensorReal(TempSensor):
 
     def get_temperature(self):
         '''read temp from tc and convert if needed'''
+        if not hasattr(self, '_consecutive_tc_errors'):
+            self._consecutive_tc_errors = 0
         try:
             temp = self.raw_temp() # raw_temp provided by subclasses
             if config.temp_scale.lower() == "f":
                 temp = (temp*9/5)+32
             self.status.good()
+            self._consecutive_tc_errors = 0
             return temp
-        except ThermocoupleError as tce:
-            if tce.ignore:
-                log.error("Problem reading temp (ignored) %s" % (tce.message))
-                self.status.good()
-            else:
-                log.error("Problem reading temp %s" % (tce.message))
-                self.status.bad()
-        return None
+        except Exception as e:
+            self.status.bad()
+            self._consecutive_tc_errors += 1
+            log.error(f"Thermocouple read failed ({self._consecutive_tc_errors} consecutive errors): {e}")
+            print(f"ALERT: Thermocouple read failed ({self._consecutive_tc_errors} consecutive errors): {e}")
+            if self._consecutive_tc_errors >= 3:
+                # Turn off heater
+                try:
+                    if hasattr(self, 'output'):
+                        self.output.cool(0)
+                    elif hasattr(self, 'board') and hasattr(self.board, 'output'):
+                        self.board.output.cool(0)
+                except Exception as cool_err:
+                    log.error(f"Failed to turn off heater: {cool_err}")
+                # Set error state and halt job
+                if hasattr(self, 'oven'):
+                    self.oven.state = 'HALTED'
+                    self.oven.error_message = 'Thermocouple communication failure: job halted for safety.'
+                elif hasattr(self, 'state'):
+                    self.state = 'HALTED'
+                    self.error_message = 'Thermocouple communication failure: job halted for safety.'
+                log.error("CRITICAL: Thermocouple communication failure: job halted for safety. Heaters OFF.")
+                print("CRITICAL: Thermocouple communication failure: job halted for safety. Heaters OFF.")
+            return None
 
     def temperature(self):
         '''average temp over a duty cycle'''
