@@ -504,6 +504,23 @@ $(document).ready(function()
         ws_status.onmessage = function(e)
         {
             x = JSON.parse(e.data);
+            // --- HALTED/ERROR ALERT LOGIC ---
+            if (x.state && x.state === 'HALTED' && x.error_message) {
+                $.bootstrapGrowl(
+                    '<span class="glyphicon glyphicon-exclamation-sign"></span> <b>Kiln Halted</b><br/>' + x.error_message,
+                    {
+                        ele: 'body',
+                        type: 'danger',
+                        offset: {from: 'top', amount: 250},
+                        align: 'center',
+                        width: 385,
+                        delay: 0,
+                        allow_dismiss: true,
+                        stackup_spacing: 10
+                    }
+                );
+            }
+
             if (x.type == "backlog")
             {
                 if (x.profile)
@@ -530,7 +547,7 @@ $(document).ready(function()
                 {
                     if(state_last == "RUNNING" && state != "PAUSED" )
                     {
-			console.log(state);
+                        console.log(state);
                         $('#target_temp').html('---');
                         updateProgress(0);
                         $.bootstrapGrowl("<span class=\"glyphicon glyphicon-exclamation-sign\"></span> <b>Run completed</b>", {
