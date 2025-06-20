@@ -350,7 +350,7 @@ class MCP9600Sensor(TempSensorReal):
         address = getattr(config, 'mcp9600_i2c_address', 0x67)
         self.thermocouple = adafruit_mcp9600.MCP9600(i2c)
         # MCP9600 does not use type in constructor, but you can set .thermocouple_type if needed
-        tc_type = getattr(config, 'thermocouple_type', 'K')
+        tc_type = getattr(config, 'thermocouple_type', 'R')
         try:
             self.thermocouple.thermocouple_type = tc_type
         except AttributeError:

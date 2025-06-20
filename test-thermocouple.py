@@ -71,6 +71,12 @@ if(getattr(config, 'mcp9600', 0)):
         i2c = busio.I2C(board.SCL, board.SDA)
     address = getattr(config, 'mcp9600_i2c_address', 0x67)
     sensor = adafruit_mcp9600.MCP9600(i2c)
+    # Set thermocouple type from config if available
+    tc_type = getattr(config, 'thermocouple_type', 'K')
+    try:
+        sensor.thermocouple_type = tc_type
+    except AttributeError:
+        pass
 
 print("Degrees displayed in %s\n" % (config.temp_scale))
 
@@ -78,6 +84,9 @@ temp = 0
 while(True):
     time.sleep(1)
     try:
+        # Print the currently active thermocouple type before each read
+        tc_type = getattr(config, 'thermocouple_type', 'K')
+        print(f"Thermocouple type: {tc_type}")
         temp = sensor.temperature
         scale = "C"
         if config.temp_scale == "f":
