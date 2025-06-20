@@ -100,7 +100,7 @@ while(True):
                 print(f"Temperature: {temp:.2f}{scale}")
                 print(f"Ambient (cold junction) temp: {sensor.ambient_temperature:.2f}C")
                 print(f"Delta temp: {sensor.delta_temperature:.2f}C")
-                print(f"ADC value: {sensor.adc_value}")
+                # print(f"ADC value: {sensor.adc_value}")
                 print(f"Thermocouple type (chip): {getattr(sensor, 'thermocouple_type', 'N/A')}")
                 print(f"Status: {getattr(sensor, 'status', 'N/A')}")
                 print(f"Alert 1: {getattr(sensor, 'alert_1', 'N/A')}")
