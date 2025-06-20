@@ -76,7 +76,7 @@ currency_type   = "$"   # Currency Symbol to show when calculating cost to run j
 # whether you choose HW or SW spi, it is autodetected. If you list the PINs
 # below, software spi is assumed.
 
-#######################################
+######################################
 # Output to control the relay
 #######################################
 # A single GPIO pin is used to control a relay which controls the kiln.
