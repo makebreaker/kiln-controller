@@ -77,6 +77,9 @@ if(getattr(config, 'mcp9600', 0)):
         sensor.thermocouple_type = tc_type
     except AttributeError:
         pass
+    is_mcp9600 = True
+else:
+    is_mcp9600 = False
 
 print("Degrees displayed in %s\n" % (config.temp_scale))
 
@@ -84,7 +87,6 @@ temp = 0
 while(True):
     time.sleep(1)
     try:
-        # Print the currently active thermocouple type before each read
         tc_type = getattr(config, 'thermocouple_type', 'K')
         print(f"Thermocouple type: {tc_type}")
         temp = sensor.temperature
@@ -92,6 +94,22 @@ while(True):
         if config.temp_scale == "f":
             temp = temp * (9/5) + 32 
             scale ="F"
-        print("%s %0.2f%s" %(datetime.datetime.now(),temp,scale))
+        if is_mcp9600:
+            # Print all available MCP9600 diagnostics/state
+            try:
+                print(f"Temperature: {temp:.2f}{scale}")
+                print(f"Ambient (cold junction) temp: {sensor.ambient_temperature:.2f}C")
+                print(f"Delta temp: {sensor.delta_temperature:.2f}C")
+                print(f"ADC value: {sensor.adc_value}")
+                print(f"Thermocouple type (chip): {getattr(sensor, 'thermocouple_type', 'N/A')}")
+                print(f"Status: {getattr(sensor, 'status', 'N/A')}")
+                print(f"Alert 1: {getattr(sensor, 'alert_1', 'N/A')}")
+                print(f"Alert 2: {getattr(sensor, 'alert_2', 'N/A')}")
+                print(f"Alert 3: {getattr(sensor, 'alert_3', 'N/A')}")
+                print(f"Alert 4: {getattr(sensor, 'alert_4', 'N/A')}")
+            except Exception as diagerr:
+                print(f"MCP9600 diagnostics error: {diagerr}")
+        else:
+            print("%s %0.2f%s" %(datetime.datetime.now(),temp,scale))
     except Exception as error:
         print("error: " , error)
