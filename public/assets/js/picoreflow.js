@@ -742,3 +742,18 @@ $(document).ready(function()
 
     }
 });
+
+function restartKilnController() {
+    if (confirm('Are you sure you want to restart the kiln controller?')) {
+        $.ajax({
+            url: '/restart',
+            type: 'POST',
+            success: function(data) {
+                $.bootstrapGrowl('<b>Controller restart requested.</b>', { type: 'info', align: 'center', width: 385 });
+            },
+            error: function(xhr, status, error) {
+                $.bootstrapGrowl('<b>Failed to request restart:</b> ' + error, { type: 'danger', align: 'center', width: 385 });
+            }
+        });
+    }
+}

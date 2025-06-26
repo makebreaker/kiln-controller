@@ -350,5 +350,22 @@ def main():
     server.serve_forever()
 
 
+@app.post('/restart')
+def restart_controller():
+    # Only allow from localhost for safety
+    if bottle.request.remote_addr not in ('127.0.0.1', '::1', 'localhost'):
+        bottle.response.status = 403
+        return 'Forbidden'
+    # Try to restart the systemd service
+    import subprocess
+    try:
+        subprocess.Popen(['systemctl', 'restart', 'kiln-controller.service'])
+        return 'Restart requested'
+    except Exception as e:
+        log.error(f"Failed to restart kiln-controller.service: {e}")
+        bottle.response.status = 500
+        return f'Failed to restart: {e}'
+
+
 if __name__ == "__main__":
     main()
