@@ -205,7 +205,7 @@ kiln_must_catch_up = True
 # or 100% off because the kiln is too hot. No integral builds up
 # outside the window. The bigger you make the window, the more
 # integral you will accumulate. This should be a positive integer.
-pid_control_window = 15 #degrees
+pid_control_window = 30 #degrees
 
 # thermocouple offset
 # If you put your thermocouple in ice water and it reads 36F, you can
