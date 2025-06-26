@@ -137,9 +137,13 @@ sensor_time_wait = 2
 # well with the simulated oven. You must tune them to work well with 
 # your specific kiln. Note that the integral pid_ki is
 # inverted so that a smaller number means more integral action.
-pid_kp = 10   # Proportional 25,200,200
-pid_ki = 80   # Integral
-pid_kd = 220.83497910261562 # Derivative
+# pid_kp = 10   # Proportional 25,200,200
+# pid_ki = 80   # Integral
+# pid_kd = 220.83497910261562 # Derivative
+
+pid_kp = -26.164812629182837
+pid_ki = 0.6530424815149309
+pid_kd = 111.76779948585911
 
 ########################################################################
 #
@@ -273,7 +277,7 @@ kiln_profiles_directory = os.path.abspath(os.path.join(os.path.dirname( __file__
 # of the elements are used max.
 # To prevent throttling, set throttle_percent to 100.
 
-throttle_below_temp = 100
+throttle_below_temp = 150
 throttle_percent = 70
 
 #######################################
