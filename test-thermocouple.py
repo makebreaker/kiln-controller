@@ -83,24 +83,9 @@ else:
 
 print("Degrees displayed in %s\n" % (config.temp_scale))
 
-# Add these to config.py:
-# thermocoupleErrorWindow = 0.1  # degrees C
-# thermocoupleErrorPeriod = 60   # seconds
-try:
-    from config import thermocoupleErrorWindow, thermocoupleErrorPeriod
-except ImportError:
-    thermocoupleErrorWindow = 0.1
-    thermocoupleErrorPeriod = 60
+# Remove static temperature safety logic from test-thermocouple.py
 
-# Track temperature history for error detection
-from collections import deque
-
-temp_history = deque()
-time_history = deque()
-
-temp = 0
 consecutive_mcp9600_errors = 0
-last_error_check_time = time.time()
 while(True):
     time.sleep(1)
     now = time.time()
@@ -110,22 +95,6 @@ while(True):
         temp = sensor.temperature
         scale = "C"
         mcp9600_fault = False
-        # Track temperature and time for error window logic
-        temp_c = temp if config.temp_scale.lower() == 'c' else (temp - 32) * 5/9
-        temp_history.append(temp_c)
-        time_history.append(now)
-        # Remove old entries
-        while time_history and (now - time_history[0]) > thermocoupleErrorPeriod:
-            temp_history.popleft()
-            time_history.popleft()
-        # Only check if not idle (simulate with a variable, e.g. kiln_running = True)
-        kiln_running = True  # Set this to False if you want to simulate idle
-        if kiln_running and len(temp_history) > 1:
-            temp_min = min(temp_history)
-            temp_max = max(temp_history)
-            if (temp_max - temp_min) < thermocoupleErrorWindow and (now - time_history[0]) >= thermocoupleErrorPeriod:
-                print(f"CRITICAL: Temperature has not changed by more than {thermocoupleErrorWindow}C in {thermocoupleErrorPeriod}s. Halting for safety.")
-                break
         if is_mcp9600:
             # Check MCP9600 input range error (bit 0 of status)
             status = getattr(sensor, 'status', 0)

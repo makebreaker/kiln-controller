@@ -196,7 +196,7 @@ kiln_must_catch_up = True
 # or 100% off because the kiln is too hot. No integral builds up
 # outside the window. The bigger you make the window, the more
 # integral you will accumulate. This should be a positive integer.
-pid_control_window = 5 #degrees
+pid_control_window = 15 #degrees
 
 # thermocouple offset
 # If you put your thermocouple in ice water and it reads 36F, you can
@@ -273,8 +273,8 @@ kiln_profiles_directory = os.path.abspath(os.path.join(os.path.dirname( __file__
 # of the elements are used max.
 # To prevent throttling, set throttle_percent to 100.
 
-throttle_below_temp = 150
-throttle_percent = 50
+throttle_below_temp = 100
+throttle_percent = 70
 
 #######################################
 # OLED Display Configuration
@@ -290,3 +290,6 @@ oled_i2c_address = 0x3C
 # I2C configuration
 # Set i2c_frequency to None to use the system default, or set to an integer (e.g. 100000 for 100kHz)
 i2c_frequency = None  # e.g. 100000, 400000, 10000, etc. Set to None to auto-detect or use default
+
+thermocoupleErrorWindow = 0.08  # degrees C
+thermocoupleErrorPeriod = 30   # seconds

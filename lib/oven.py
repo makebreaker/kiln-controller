@@ -355,9 +355,40 @@ class MCP9600Sensor(TempSensorReal):
             self.thermocouple.thermocouple_type = tc_type
         except AttributeError:
             pass
+        # For static temp error detection
+        from collections import deque
+        self.temp_history = deque()
+        self.time_history = deque()
 
     def raw_temp(self):
-        return self.thermocouple.temperature
+        temp = self.thermocouple.temperature
+        # --- MCP9600 input range error (bit 0 of status) ---
+        status = getattr(self.thermocouple, 'status', 0)
+        if status & 0x01:
+            raise RuntimeError('MCP9600 input range error (possible thermocouple disconnect or short)')
+        # --- Static temperature error detection ---
+        try:
+            window = getattr(config, 'thermocoupleErrorWindow', 0.1)
+            period = getattr(config, 'thermocoupleErrorPeriod', 60)
+        except Exception:
+            window = 0.1
+            period = 60
+        now = time.time()
+        temp_c = temp if config.temp_scale.lower() == 'c' else (temp - 32) * 5/9
+        self.temp_history.append(temp_c)
+        self.time_history.append(now)
+        # Remove old entries
+        while self.time_history and (now - self.time_history[0]) > period:
+            self.temp_history.popleft()
+            self.time_history.popleft()
+        # Only check if oven is running (self.oven.state == 'RUNNING')
+        oven_running = hasattr(self, 'oven') and getattr(self.oven, 'state', None) == 'RUNNING'
+        if oven_running and len(self.temp_history) > 1:
+            temp_min = min(self.temp_history)
+            temp_max = max(self.temp_history)
+            if (temp_max - temp_min) < window and (now - self.time_history[0]) >= period:
+                raise RuntimeError(f"Temperature has not changed by more than {window}C in {period}s. Possible sensor fault.")
+        return temp
 
 class Oven(threading.Thread):
     '''parent oven class. this has all the common code
