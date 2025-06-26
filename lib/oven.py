@@ -871,9 +871,13 @@ class Profile():
     def get_target_temperature(self, time):
         if time > self.get_duration():
             return 0
-
+        # Handle single-point profile gracefully
+        if len(self.data) == 1:
+            return self.data[0][1]
         (prev_point, next_point) = self.get_surrounding_points(time)
-
+        if prev_point is None or next_point is None:
+            # Not enough points to interpolate, fallback to first point's temp
+            return self.data[0][1]
         incl = float(next_point[1] - prev_point[1]) / float(next_point[0] - prev_point[0])
         temp = prev_point[1] + (time - prev_point[0]) * incl
         return temp
