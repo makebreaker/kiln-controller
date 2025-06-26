@@ -141,9 +141,9 @@ sensor_time_wait = 2
 # pid_ki = 80   # Integral
 # pid_kd = 220.83497910261562 # Derivative
 
-pid_kp = -26.164812629182837
-pid_ki = 60
-pid_kd = 111.76779948585911
+pid_kp = 20
+pid_ki = 50
+pid_kd = 100
 
 # # First tune values:
 # pid_kp = -26.164812629182837
